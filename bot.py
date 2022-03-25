@@ -36,21 +36,21 @@ async def enter_name(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer(db.register(message.from_user.id, message.text))
     await message.answer('Используете следующие команды:\n'
-                         '/ready - чтобы встать в очередь\n'
-                         '/pass  - чтобы выйти из очереди\n'
-                         '/show  - чтобы посмотреть очередь')
+                         '/ready -- чтобы встать в очередь\n'
+                         '/pass  -- чтобы выйти из очереди\n'
+                         '/show  -- чтобы посмотреть очередь')
 
 
 @dp.message_handler(commands=['ready'])
 async def ready(message: types.Message):
     buttons = [
         types.InlineKeyboardButton(text='ОПД', callback_data='ОПД'),
-        types.InlineKeyboardButton(text='Прога', callback_data='Прога')
+        types.InlineKeyboardButton(text='Программирование', callback_data='Программирование')
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
     with suppress(MessageNotModified):
-        await message.answer('Выбирите предмет:', reply_markup=keyboard)
+        await message.answer('Выберете предмет:', reply_markup=keyboard)
 
 
 @dp.callback_query_handler(Text(startswith='ОПД'))
@@ -66,10 +66,10 @@ async def add_opd(call: types.CallbackQuery):
     keyboard.add(*buttons)
     with suppress(MessageNotModified):
 
-        await call.message.edit_text('Выбирете номер лабы:', reply_markup=keyboard)
+        await call.message.edit_text('Выберете номер лабораторной:', reply_markup=keyboard)
 
 
-@dp.callback_query_handler(Text(startswith='Прога'))
+@dp.callback_query_handler(Text(startswith='Программирование'))
 async def add_prog(call: types.CallbackQuery):
     buttons = [
         types.InlineKeyboardButton(text='5️⃣', callback_data=lab.new(call.data, 5)),
@@ -80,7 +80,7 @@ async def add_prog(call: types.CallbackQuery):
     keyboard = types.InlineKeyboardMarkup(row_width=5)
     keyboard.add(*buttons)
     with suppress(MessageNotModified):
-        await call.message.edit_text('Выбирете номер лабы:', reply_markup=keyboard)
+        await call.message.edit_text('Выберете номер лабораторной:', reply_markup=keyboard)
 
 
 @dp.callback_query_handler(lab.filter())
@@ -93,12 +93,12 @@ async def add(call: types.CallbackQuery, callback_data: dict):
 async def show(message: types.Message):
     buttons = [
         types.InlineKeyboardButton(text='ОПД', callback_data=shower.new('ОПД')),
-        types.InlineKeyboardButton(text='Прога', callback_data=shower.new('Прога'))
+        types.InlineKeyboardButton(text='Программирование', callback_data=shower.new('Программирование'))
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
     with suppress(MessageNotModified):
-        await message.answer('Выбирите предмет:', reply_markup=keyboard)
+        await message.answer('Выберете предмет:', reply_markup=keyboard)
 
 
 @dp.callback_query_handler(shower.filter())
@@ -120,7 +120,7 @@ async def remove(message: types.Message):
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
     with suppress(MessageNotModified):
-        await message.answer('Выбирите запись:', reply_markup=keyboard)
+        await message.answer('Выберете запись:', reply_markup=keyboard)
 
 
 @dp.callback_query_handler(recorder.filter())
@@ -132,9 +132,9 @@ async def remove_record(call: types.CallbackQuery, callback_data: dict):
 @dp.message_handler()
 async def helper(message: types.Message):
     await message.answer('Используете следующие команды:\n'
-                         '/ready - чтобы встать в очередь\n'
-                         '/pass  - чтобы выйти из очереди\n'
-                         '/show  - чтобы посмотреть очередь')
+                         '/ready -- чтобы встать в очередь\n'
+                         '/pass  -- чтобы выйти из очереди\n'
+                         '/show  -- чтобы посмотреть очередь')
 
 
 if __name__ == '__main__':
