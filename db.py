@@ -43,7 +43,11 @@ def show(subject):
 
 
 def register(id, name):
-    cur.execute('INSERT INTO students VALUES (?, ?)', (id, name))
+    cur.execute('SELECT * from students WHERE id=?', (id,))
+    if cur.fetchall():
+        cur.execute('INSERT INTO students VALUES (?, ?)', (id, name))
+    else:
+        cur.execute('UPDATE students SET name=? WHERE id=?', (name, id))
     conn.commit()
     return 'Вы успешно зарегистрированы!'
 
