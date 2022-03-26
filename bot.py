@@ -6,6 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.types import ParseMode
 from aiogram.utils.callback_data import CallbackData
 from aiogram.utils.exceptions import MessageNotModified
 
@@ -106,9 +107,14 @@ async def show_queue(call: types.CallbackQuery, callback_data: dict):
     with suppress(MessageNotModified):
         queue = db.show(callback_data['subject'])
         answer = ''
+        caller = db.get_name(call.from_user.id)[0]
+        print(caller)
         for student in queue:
-            answer += ': лабораторная №'.join([student[0], str(student[1])]) + '\n'
-        await call.message.edit_text(callback_data['subject'] + '\n' + answer)
+            if student[0] == caller:
+                answer += ': лабораторная №'.join(['*' + student[0], str(student[1]) + '*']) + '\n'
+            else:
+                answer += ': лабораторная №'.join([student[0], str(student[1])]) + '\n'
+        await call.message.edit_text(callback_data['subject'] + '\n' + answer, parse_mode=ParseMode.MARKDOWN)
 
 
 @dp.message_handler(commands=['pass'])
