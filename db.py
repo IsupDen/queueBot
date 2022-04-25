@@ -1,11 +1,12 @@
 import datetime
 import pymysql
+import os
 
 
 def connect():
     global conn
     conn = pymysql.connect(host='5.181.76.76', user='isupden',
-                       password='Denar332347..', db='queuebot')
+                           password=os.environ.get('SQL_PASSWORD'), db='queuebot')
     global cur
     cur = conn.cursor()
 

@@ -19,6 +19,7 @@ logging.basicConfig(level=logging.INFO,
                     datefmt='%d/%m/%y %H:%M:%S')
 
 API_TOKEN = os.environ.get('API_KEY')
+ADMIN_ID = os.environ.get('ADMIN_ID')
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -26,6 +27,8 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 lab = CallbackData('lab', 'subject', 'number')
 shower = CallbackData('lab', 'subject')
 recorder = CallbackData('record', 'subject', 'number')
+admin_add = CallbackData('add', 'student', 'subject', 'number')
+admin_drop = CallbackData('drop', 'student', 'subject', 'number')
 
 
 class User(StatesGroup):
